@@ -1,0 +1,63 @@
+########################################################################################
+#########	 Schema Definition for the mongo database to be used for SSO     ###########
+########################################################################################
+
+auw_schema={
+			"user_data":{
+							"id":"",
+							"name":"",
+							"username":"",
+							"password":"",
+							"email":"",
+							"phone":"",
+							"native_country":"",
+							"native_city":"",
+							"current_country":"",
+							"current_city":"",
+							"profession":"",
+							"interests":"",
+							"active_status":"",
+							"signup_type":"",
+							"fb_id":"",
+							"twt_id":"",
+							"lnkd_id":"",
+							"google_id":"",
+							"timestamp":""
+			},
+			"countries":{
+							"country_iso":"",
+							"country_name":"",
+							"country_other_name":""
+			},
+			"cities":{
+							"city_iso":"",
+							"city_name":"",
+							"city_other_name":"",
+							"country_iso":""
+			},
+			"signup_types":{
+							"type_code":"",
+							"type_name":""
+			},
+			"user_activity":{
+							"username":"",
+							"ipAdd":"",
+							"session_start":"",
+							"session_end":"",
+							"session_type":"",
+							"geolocation":"",
+							"user_agent":"",
+							"device_type":"",
+							"os":"",
+							"browser":""
+			},			
+			"entity_brief":{
+							"entity_id":"",
+							"entity_type":"",
+							"entity_name":""
+			},			
+			"device_log_counters":{
+							"entity_id":"",
+							"entity_count":""
+			}
+}

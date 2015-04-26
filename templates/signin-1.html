@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>SSO :: Sign In First Screen</title>
+
+<link rel="stylesheet" href="static/css/sso.css" type="text/css">
+<link rel="stylesheet" href="static/css/responsive.css" type="text/css">
+
+
+</head>
+<body>
+
+<div class="wrapper">
+
+<!-- Header Dv -->
+<div class="hide" style="padding:15px;"><a href="#login" name="login" rel="popupModal">Login</a></div>
+<!-- Header Dv cl-->
+
+
+<!-- SignIn Dv -->
+<div class="signinDv" id="login">
+            <!--<div class="close"><a href="#" class="close">X</a></div>-->
+            <div class="signin-container">
+                      <!-- Sign In - Ist Screen Dv -->
+                      <div id="sign">
+                          <h2>Sign In</h2>
+                          <p>Get more than ever out of Amar Ujala.</p>
+                          <p>Build your own personal story stream, participate in discussions, easily share your favorite stories,
+                          and connect with what your friends are sharing.</p>
+                          <p>Just select your favorite social network to get started.</p>
+                          <div class="social">
+                          <a class="icons auIcn" title="Amar Ujala" href="/auw_login" id="tp1" onclick="show('signFrm','tp1')">Amar Ujala</a>
+                          <a class="icons fbIcn" title="Facebook" href="#">Facebook</a>
+                          <a class="icons twIcn" title="Twitter" href="#">Twitter</a>
+                          <a class="icons gplusIcn" title="Google Plus" href="#">Google Plus</a>
+                          <a class="icons linkndIcn" title="Linked In" href="#">Linked In</a>
+                          <div class="clr"></div>
+                          </div>
+                      </div>
+                      <!-- Sign In - Ist Screen Dv -->               
+            </div>                                                 
+<div class="clr"></div>
+</div>
+<!-- SignIn Dv cl-->
+
+
+
+</div><!-- Wrapper Dv cl -->
+
+<script src="static/scripts/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="static/scripts/jquery.popup.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$('a[rel*=popupModal]').popupModal({closeButton: ".close" });  /*top: 20 ,*/
+	});
+
+  $(document).ready(function(){
+    $('a[rel*=popupModal]').click()
+  })
+</script>
+
+</body>
+</html>
