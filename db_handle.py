@@ -33,7 +33,7 @@ class dbHandler:
 	def update_db(self,db,coll,set_update,query):
 		try:
 			collection = db.get_collection(coll)
-			db.collection.update(query,set_update,False )
+			db.collection.update(query,set_update)
 		except Exception,e:
 			print traceback.format_exc()
 

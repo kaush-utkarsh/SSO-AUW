@@ -3,10 +3,33 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>SSO :: Sign In First Screen</title>
-
 <link rel="stylesheet" href="static/css/sso.css" type="text/css">
 <link rel="stylesheet" href="static/css/responsive.css" type="text/css">
+<script type="text/javascript" src="//platform.linkedin.com/in.js">
+    api_key: {{linKey}}
+    authorize: true
+</script>
+<script>
+window.fbAsyncInit = function() {
+    FB.init({
+    appId      : {{ fbKey }},
+    cookie     : true,  // enable cookies to allow the server to access 
+                                            // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.2' // use version 2.2
+    });
+};
 
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "static/scripts/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+</script>
+<script type="text/javascript" src="static/scripts/social.js"></script>
 
 </head>
 <body>
@@ -31,10 +54,14 @@
                           <p>Just select your favorite social network to get started.</p>
                           <div class="social">
                           <a class="icons auIcn" title="Amar Ujala" href="/auw_login" id="tp1" onclick="show('signFrm','tp1')">Amar Ujala</a>
-                          <a class="icons fbIcn" title="Facebook" href="#">Facebook</a>
+                          <div>
+                            <fb:login-button scope="public_profile,email" data-auto-logout-link="true" onlogin="checkLoginState();">
+                            </fb:login-button>
+                          </div>
+                          <!-- <a class="icons fbIcn" title="Facebook" href="#">Facebook</a> -->
                           <a class="icons twIcn" title="Twitter" href="#">Twitter</a>
                           <a class="icons gplusIcn" title="Google Plus" href="#">Google Plus</a>
-                          <a class="icons linkndIcn" title="Linked In" href="#">Linked In</a>
+                          <a class="icons linkndIcn" title="Linked In" onclick="liAuth()">LinkedIn</a>
                           <div class="clr"></div>
                           </div>
                       </div>
@@ -50,14 +77,17 @@
 
 <script src="static/scripts/jquery.js" type="text/javascript"></script>
 <script type="text/javascript" src="static/scripts/jquery.popup.min.js"></script>
-<script type="text/javascript">
-	$(function() {
-		$('a[rel*=popupModal]').popupModal({closeButton: ".close" });  /*top: 20 ,*/
-	});
+<script>
+  $(function() 
+  {
+    $('a[rel*=popupModal]').popupModal({closeButton: ".close" });  /*top: 20 ,*/
+  });
 
-  $(document).ready(function(){
+  $(document).ready(function()
+  {
     $('a[rel*=popupModal]').click()
-  })
+  });
+
 </script>
 
 </body>

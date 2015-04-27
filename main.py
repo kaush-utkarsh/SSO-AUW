@@ -29,8 +29,11 @@ def login_required(f):
 	@wraps(f)
 	def decorated_view(*args, **kwargs):
 		if request.endpoint in app.view_functions:
-			if 'username' not in session:
-				return redirect('/')
+			if 'SignIn' not in session:
+				if 'username' not in session:
+					return redirect('/')
+				else:
+					return redirect('/password_set')
 		return f(*args, **kwargs)
 	return decorated_view
 
@@ -45,6 +48,7 @@ def index():
 		psword = request.form['psword']
 		ip_addr = request.form['ip']
 		geo = request.form['geo']
+		source = request.form['source']
 
 		psword = hashlib.md5(psword).hexdigest()
 		session_start="session_start"
@@ -63,7 +67,7 @@ def index():
 						'native_city':city,
 						'current_city':city,
 						'password':psword,
-						'signup_type':"auw",
+						'signup_type':source,
 						'timestamp':currTime
 					}
 		
@@ -77,7 +81,7 @@ def index():
 			session['ip']=ip_addr
 			session['user_agent']=user_agent
 			session['geo']=geo
-
+			session['SignIn']=True
 			session['completeness']=len(ins_val.keys())*100/len(auw_schema.keys())
 			return "True"
 		
@@ -86,6 +90,112 @@ def index():
 	except Exception,e:
 		print traceback.format_exc()
 		return "False"
+
+@app.route('/setPwdAPI', methods = ['POST'])
+def setPwdAPI():
+	try:
+		psword = request.form['psword']
+		psword = hashlib.md5(psword).hexdigest()
+				
+		ins_val={
+					'password':psword
+				}
+		
+		db.update_db(mongo_db,"user_data",ins_val,{'username':session['username']})
+				
+		session['SignIn']=True
+		return "True"
+		
+	except Exception,e:
+		print traceback.format_exc()
+		return "False"
+
+
+
+@app.route('/socialSignIn', methods = ['POST'])
+def social():
+	try:
+		user_agent = request.headers.get('User-Agent')
+		name = request.form['name']
+		email = request.form['email']
+		ip_addr = request.form['ip']
+		geo = request.form['geo']
+		source = request.form['source']
+		s_id = request.form['id']
+
+		session_start="session_start"
+		
+		query = {"email":email}
+		user_data = db.select_db(mongo_db,"user_data",query)
+		
+		if len(user_data)==0:
+		
+			currTime=subroutines.getCurrentTime()
+		
+			ins_val={
+						'name':name,
+						'email':email,
+						'username':email,
+						'signup_type':source,
+						'timestamp':currTime,
+						source:s_id
+					}
+		
+			db.insert_db(mongo_db,"user_data",ins_val)
+		
+			subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignUp",geo)
+			
+			session['name']=name
+			session['username']=email
+			session['email']=email
+			session['ip']=ip_addr
+			session['user_agent']=user_agent
+			session['geo']=geo
+			session['completeness']=len(ins_val.keys())*100/len(auw_schema.keys())
+			return "True"
+		
+		else:
+
+			if user_data[0][source]!=s_id:
+		
+				ins_val={
+							source:s_id
+						}
+			
+				db.update_db(mongo_db,"user_data",ins_val,{'username':username})
+			
+				subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo)
+				
+				session['name']=name
+				session['username']=email
+				session['email']=email
+				session['ip']=ip_addr
+				session['user_agent']=user_agent
+				session['geo']=geo
+				session['completeness']=len(ins_val.keys())*100/len(auw_schema.keys())
+				session['SignIn']=True
+				return "True"
+			
+			else:
+				subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo)
+				
+				session['name']=name
+				session['username']=email
+				session['email']=email
+				session['ip']=ip_addr
+				session['user_agent']=user_agent
+				session['geo']=geo
+				session['completeness']=len(ins_val.keys())*100/len(auw_schema.keys())
+				session['SignIn']=True
+				return "True"
+
+
+	except Exception,e:
+		print traceback.format_exc()
+		return "False"
+
+
+
 
 @app.route('/signinAPI', methods = ['POST'])
 def signinApi():
@@ -128,7 +238,7 @@ def signinApi():
 			session['user_agent']=user_agent
 			session['geo']=geo
 			session['completeness']=empty*100/total
-
+			session['SignIn']=True
 			subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo)
 			
 			return "True"
@@ -141,7 +251,7 @@ def signinApi():
 @app.route('/')
 @app.route('/login')
 def login():
-	return render_template('signin-1.html')
+	return render_template('signin-1.html',linKey='75u3urbp91jm56',fbKey='680661965413079')
 
 @app.route('/sign_out')
 @login_required
@@ -155,6 +265,14 @@ def logout():
 def login_auw():
 	return render_template('signin-2.html')
 
+@app.route('/password_set')
+def setPassword():
+	print session
+	return render_template('password_set.html')
+
+@app.route('/fb')
+def fb():
+	return render_template('fb.html',fbKey='680661965413079')
 
 @app.route('/signup')
 def signupPage():
