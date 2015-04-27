@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<meta name="google-signin-client_id" content="{{gKey}}.apps.googleusercontent.com">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>SSO :: Sign In First Screen</title>
 <link rel="stylesheet" href="static/css/sso.css" type="text/css">
@@ -52,16 +54,20 @@ window.fbAsyncInit = function() {
                           <p>Build your own personal story stream, participate in discussions, easily share your favorite stories,
                           and connect with what your friends are sharing.</p>
                           <p>Just select your favorite social network to get started.</p>
-                          <div class="social">
-                          <a class="icons auIcn" title="Amar Ujala" href="/auw_login" id="tp1" onclick="show('signFrm','tp1')">Amar Ujala</a>
-                          <div>
+                          <div class="social row">
+                          <div class="col-md-2">  
+                            <a class="icons auIcn" title="Amar Ujala" href="/auw_login" id="tp1" onclick="show('signFrm','tp1')">Amar Ujala</a>
+                          </div>
+                          <div class="col-md-4">
                             <fb:login-button scope="public_profile,email" data-auto-logout-link="true" onlogin="checkLoginState();">
                             </fb:login-button>
                           </div>
                           <!-- <a class="icons fbIcn" title="Facebook" href="#">Facebook</a> -->
-                          <a class="icons twIcn" title="Twitter" href="#">Twitter</a>
-                          <a class="icons gplusIcn" title="Google Plus" href="#">Google Plus</a>
-                          <a class="icons linkndIcn" title="Linked In" onclick="liAuth()">LinkedIn</a>
+                          <!-- <a class="icons twIcn" title="Twitter" href="#">Twitter</a> -->
+                          <div class="col-md-4 g-signin2" data-onsuccess="onGSignIn" title="Google Plus"></div>
+                          <div>
+                            <a class="col-md-2 icons linkndIcn" title="Linked In" onclick="liAuth()">LinkedIn</a>
+                          </div>
                           <div class="clr"></div>
                           </div>
                       </div>

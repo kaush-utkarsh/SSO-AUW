@@ -1,4 +1,3 @@
-// Linkedin JS
 var fName="", lName="", email="", lin="";
 
 function getLocation() {
@@ -56,6 +55,8 @@ function socialSubmit(payload)
     });    
 }
 
+// Linkedin JS
+
 function liAuth()
 {
    IN.User.authorize(function(){
@@ -96,4 +97,10 @@ function checkLoginState() {
     });
 }
 
+// Google JS
 
+function onGSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    var payload = {source:"google_id",name:profile.getName(),email:profile.getEmail(),ip:ip,geo:"("+lat+","+lng+")",id:profile.getId()}
+    socialSubmit(payload)
+}
