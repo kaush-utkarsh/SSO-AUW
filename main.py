@@ -270,10 +270,6 @@ def setPassword():
 	print session
 	return render_template('password_set.html')
 
-@app.route('/fb')
-def fb():
-	return render_template('fb.html',fbKey='680661965413079')
-
 @app.route('/signup')
 def signupPage():
 	return render_template('signup-1.html')		
