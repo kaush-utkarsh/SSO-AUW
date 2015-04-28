@@ -249,10 +249,45 @@ def signinApi():
 		print traceback.format_exc()
 		return "False"
 
+
+@app.route('/changePasswordAPI', methods = ['POST'])
+def changePasswordAPI():
+	try:
+		name = request.form['name']
+		opsword = request.form['opwd']
+		npsword = request.form['psword']
+
+		opsword = hashlib.md5(opsword).hexdigest()
+		npsword = hashlib.md5(npsword).hexdigest()
+
+		session_start="session_start"
+
+		query={"username":name, "password":opsword}
+		user_data=db.select_db(mongo_db,"user_data",query)
+
+		if len(user_data)!=0:
+			ins_val={
+					'password':npsword
+				}
+
+			db.update_db(mongo_db,"user_data",ins_val,{'username':name})			
+	
+			return "True"
+		else:
+			return "False"
+	except Exception,e:
+		print traceback.format_exc()
+		return "False"
+
+
 @app.route('/')
 @app.route('/login')
 def login():
 	return render_template('signin-1.html',linKey='75u3urbp91jm56',fbKey='680661965413079',gKey='990809127647-3qjp63toeb81bihtlu2i3mu8a07fq3qr')
+
+@app.route('/change_password')
+def change_password():
+	return render_template('change_password.html')
 
 @app.route('/sign_out')
 def logout():

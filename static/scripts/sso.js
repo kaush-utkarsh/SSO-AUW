@@ -45,11 +45,11 @@ ip=myIP();
 
 getLocation();
 
-function signupAjax(payload)
+function signUpInAjax(payload,url)
 {
 	$.ajax(
         {
-            url: "/signupAPI",
+            url: url,
             type: "POST",
             crossDomain: true,
             data: payload,
@@ -69,7 +69,7 @@ $('form[id="signUp"]').submit(function(event)
     event.preventDefault();
     var ip_Add=myIP()
     var payload={source:"auw",name:$('input[name="name"]').val(),city:$('input[name="city"]').val(),email:$('input[name="email"]').val(),psword:$('input[name="pwd"]').val(),ip:ip,geo:"("+lat+","+lng+")"}
-    signupAjax(payload);
+    signUpInAjax(payload,"/signupAPI");
 })
 
 $('form[id="SignIn"]').submit(function(event)
@@ -78,7 +78,7 @@ $('form[id="SignIn"]').submit(function(event)
     event.preventDefault();
     var ip_Add=myIP()
     var payload={name:$('input[name="name"]').val(),psword:$('input[name="pwd"]').val(),ip:ip,geo:"("+lat+","+lng+")"}
-    signupAjax(payload);
+    signUpInAjax(payload,"/signinAPI");
 
 })
 
@@ -92,6 +92,28 @@ $('form[id="setPwd"]').submit(function(event)
 	$.ajax(
         {
             url: "/setPwdAPI",
+            type: "POST",
+            crossDomain: true,
+            data: payload,
+            datatype:'html',
+            success: function (data) {
+                if(data=="True")
+                    window.location.assign('/signup_proceed')
+                else
+                    console.log(data)
+            }
+    });
+})
+
+
+$('form[id="chPassword"]').submit(function(event)
+{
+    event.preventDefault();
+    var ip_Add=myIP()
+    var payload={name:$('input[name="name"]').val(),opwd:$('input[name="opwd"]').val(),psword:$('input[name="npwd"]').val()}
+    $.ajax(
+        {
+            url: "/changePasswordAPI",
             type: "POST",
             crossDomain: true,
             data: payload,
