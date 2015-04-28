@@ -1,4 +1,5 @@
 import traceback, time, datetime
+from user_agents import parse
 
 def getCurrentTime():
 	currTime=datetime.datetime.now()
@@ -6,6 +7,15 @@ def getCurrentTime():
 	return currTime
 
 def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo):
+	try:
+		user_agent=parse(userAgent)
+		browser = str(user_agent.browser.family)+', version: '+user_agent.browser.version_string
+		os = str(user_agent.os.family)+', version: '+user_agent.os.version_string
+		device = str(user_agent.device.family)
+	except Exception, e:
+		browser = ""
+		os = ""
+		device = ""
 
 	currTime=getCurrentTime()
 	if session_st_end=="session_start":
@@ -15,7 +25,10 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo):
 					'user_agent':userAgent,
 					session_st_end:currTime,
 					'session_type':sessionType,
-					'geolocation':geo
+					'geolocation':geo,
+					"device_type":device,
+					"os":os,
+					"browser":browser
 				}
 		db.insert_db(mongo_db,"user_activity",ins_val)
 
