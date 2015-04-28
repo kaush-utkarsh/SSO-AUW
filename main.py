@@ -30,26 +30,13 @@ def login_required(f):
 	def decorated_view(*args, **kwargs):
 		if request.endpoint in app.view_functions:
 			if 'SignIn' not in session.keys():
+				print session
 				if 'username' not in session.keys():
 					return redirect('/')
 				else:
 					return redirect('/password_set')
 		return f(*args, **kwargs)
 	return decorated_view
-
-def logout_required(f):
-	@wraps(f)
-	def decorated_nview(*args, **kwargs):
-		if request.endpoint in app.view_functions:
-			if 'username' in session.keys() and 'SignIn' in session.keys():
-				return redirect('/signup_proceed')
-			elif 'username' in session.keys() and 'SignIn' not in session.keys():
-				return redirect('/password_set')
-			else:
-				return redirect('/')
-		return f(*args, **kwargs)
-	return decorated_nview
-
 
 @app.route('/signupAPI', methods = ['POST'])
 def index():
@@ -114,7 +101,7 @@ def setPwdAPI():
 		ins_val={
 					'password':psword
 				}
-		
+
 		db.update_db(mongo_db,"user_data",ins_val,{'username':session['username']})
 				
 		session['SignIn']=True
@@ -268,7 +255,6 @@ def login():
 	return render_template('signin-1.html',linKey='75u3urbp91jm56',fbKey='680661965413079',gKey='990809127647-3qjp63toeb81bihtlu2i3mu8a07fq3qr')
 
 @app.route('/sign_out')
-@login_required
 def logout():
 	session_end="session_end"
 	subroutines.user_log(db,mongo_db,session_end,session['email'],session['ip'],session['user_agent'],"",session['geo'])			

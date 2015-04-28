@@ -29,11 +29,30 @@ class dbHandler:
 			print traceback.format_exc()
 			data=[]
 			return data
+	
+	def select_one(self,db,coll,query):
+		try:
+			collection = db.get_collection(coll)
+			row=collection.find_one(query)
+
+			return row
+
+		except Exception,e:
+			print traceback.format_exc()
+			data=[]
+			return data
 
 	def update_db(self,db,coll,set_update,query):
 		try:
+
+			data=self.select_one(db,coll,query)
+			
+			for key in set_update.keys():
+				data[key]=set_update[key]		
+
 			collection = db.get_collection(coll)
-			db.collection.update(query,set_update)
+			collection.find_and_modify({'_id':data['_id']},data,upsert=False)
+			
 		except Exception,e:
 			print traceback.format_exc()
 
