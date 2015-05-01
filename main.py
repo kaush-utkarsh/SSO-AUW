@@ -2,7 +2,6 @@ from flask import Flask, render_template, session, redirect,url_for, flash, make
 from db_handle import dbHandler
 from functools import wraps
 import traceback, time, datetime, hashlib
-import geocoder
 import subroutines, mongo_schema
 
 app = Flask(__name__)
@@ -283,7 +282,7 @@ def changePasswordAPI():
 @app.route('/')
 @app.route('/login')
 def login():
-	return render_template('signin-1.html',linKey='75u3urbp91jm56',fbKey='680661965413079',gKey='990809127647-3qjp63toeb81bihtlu2i3mu8a07fq3qr')
+	return render_template('signin-1.html',linKey='75wicmi7s9jo0r',fbKey='1428557360782143',gKey='551417097677-2jb5r9hrf2h9lnskdaj89u29pc9daov5')
 
 @app.route('/change_password')
 def change_password():

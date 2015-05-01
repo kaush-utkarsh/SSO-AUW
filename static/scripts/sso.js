@@ -1,12 +1,3 @@
-$(function() 
-{
-	$('a[rel*=popupModal]').popupModal({closeButton: ".close" });  /*top: 20 ,*/
-});
-
-$(document).ready(function()
-{
-	$('a[rel*=popupModal]').click()
-});
 
 function getLocation() {
     if (navigator.geolocation) {

@@ -23,7 +23,7 @@ img{border:0px;}
 .signin-container h3 {font-size: 28px;margin-bottom:10px;padding: 0 15px;color:#000;text-transform:capitalize;}
 .signin-container h3 span{display:inline-block;color:#cccccc;text-transform:none;font-weight:normal;}
 .signin-container p { margin: 0 0 25px;}
-.signin-container .social{max-width:242px;margin:0px auto 10px;}
+.signin-container .social{max-width:372px;margin:0px auto 10px;}
 .icons {background: url(../images/socialIcn.jpg) repeat scroll 0 0 rgba(0, 0, 0, 0);}
 .auIcn {background-position:-1px 0px;width:36px;height:32px;margin-right:15px; text-indent:-99999px;  transition: color 0.3s ease 0s;float:left;}
 .fbIcn {background-position:-50px 0px;width:36px;height:32px;margin-right:15px; text-indent:-99999px;  transition: color 0.3s ease 0s;float:left;}
@@ -53,4 +53,3 @@ img{border:0px;}
 .skip a{float:right;color:#b1b1b1;padding:6px 0px;text-decoration:underline;font-size:20px;}
 .skip a:hover{color:#7a7979;transition: all 0.3s;text-decoration:none;}
 .close a{background:#c70514;padding:5px 10px;float:right;color:#fff;font-weight:700;display:inline-block;}
-
