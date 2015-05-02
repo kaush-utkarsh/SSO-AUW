@@ -31,7 +31,7 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,re
 		state= (addrList[len(addrList)-2]).strip()
 		pin=re.findall('\d+', state)
 		state=state[:state.find(pin[0])].strip()
-		
+		date=str(time.strftime('%Y-%m-%d'))
 
 		ins_val={
 					'referer':referer,
@@ -39,7 +39,7 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,re
 					'ipAdd':ip,
 					'user_agent':userAgent,
 					session_st_end:currTime,
-					'date':str(time.strftime('%Y-%m-%d')),
+					'date':date,
 					'time':str(time.strftime('%H:%M:%S')),
 					'session_type':sessionType,
 					'geolocation':geo,
@@ -51,6 +51,28 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,re
 					"browser":browser
 				}
 		db.insert_db(mongo_db,"user_activity",ins_val)
+
+
+		device_query = {"date":date, "device":device}
+		device_data = db.select_db(mongo_db,"device_log",device_query)
+		
+		if len(device_data)==0:
+
+			ins_val={
+						'date':date,
+						'device':device,
+						'count':1
+					}
+		
+			db.insert_db(mongo_db,"device_data",ins_val)
+		
+		else:
+
+			ins_val={
+						'count':device_data[0]['count']+1					
+					}
+			db.update_db(mongo_db,"device_log",ins_val,device_query)
+
 
 	else:
 		ins_val={
