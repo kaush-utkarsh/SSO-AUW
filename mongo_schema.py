@@ -83,8 +83,6 @@ auw_schema={
 			},			
 			"device_log":{
 							"device":"",
-							"browser":"",
-							"os":"",
 							"date":"",
 							"count":""
 			},			
