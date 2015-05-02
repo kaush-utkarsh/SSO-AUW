@@ -1,12 +1,13 @@
 import traceback, time, datetime
 from user_agents import parse
 import json,re, requests
+
 def getCurrentTime():
 	currTime=datetime.datetime.now()
 	currTime=str(currTime)
 	return currTime
 
-def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo):
+def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,referer):
 	try:
 		user_agent=parse(userAgent)
 		browser = str(user_agent.browser.family)+', version: '+user_agent.browser.version_string
@@ -33,10 +34,13 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo):
 		
 
 		ins_val={
+					'referer':referer,
 					'username':username,
 					'ipAdd':ip,
 					'user_agent':userAgent,
 					session_st_end:currTime,
+					'date':str(time.strftime('%Y-%m-%d')),
+					'time':str(time.strftime('%H:%M:%S')),
 					'session_type':sessionType,
 					'geolocation':geo,
 					"country":country,
@@ -50,13 +54,16 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo):
 
 	else:
 		ins_val={
-					session_st_end:currTime
+					session_st_end:currTime,
+					'date':str(time.strftime('%Y-%m-%d')),
+					'time':str(time.strftime('%H:%M:%S'))					
 				}
 		query = {
 					'username':username,
 					'ipAdd':ip,
 					'user_agent':userAgent,
-					'geolocation':geo
+					'geolocation':geo,
+					'referer':referer
 				}
 		db.update_db(mongo_db,"user_activity",ins_val,query)
 	

@@ -49,6 +49,7 @@ def index():
 		ip_addr = request.form['ip']
 		geo = request.form['geo']
 		source = request.form['source']
+		referer = request.form['referer']
 
 		psword = hashlib.md5(psword).hexdigest()
 		session_start="session_start"
@@ -68,12 +69,13 @@ def index():
 						'current_city':city,
 						'password':psword,
 						'signup_type':source,
-						'timestamp':currTime
+						'timestamp':currTime,
+						'referer':referer
 					}
 		
 			db.insert_db(mongo_db,"user_data",ins_val)
 		
-			subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignUp",geo)
+			subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignUp",geo,referer)
 			
 			session['name']=name
 			session['username']=email
@@ -82,7 +84,8 @@ def index():
 			session['user_agent']=user_agent
 			session['geo']=geo
 			session['SignIn']=True
-			session['completeness']=len(ins_val.keys())*100/len(auw_schema.keys())
+			session['referer']=referer
+			session['completeness']=len(ins_val.keys())*100/len(auw_schema['user_data'].keys())
 			return "True"
 		
 		else:
@@ -122,6 +125,7 @@ def social():
 		geo = request.form['geo']
 		source = request.form['source']
 		s_id = request.form['id']
+		referer = request.form['referer']
 
 		session_start="session_start"
 		
@@ -138,12 +142,13 @@ def social():
 						'username':email,
 						'signup_type':source,
 						'timestamp':currTime,
+						'referer':referer,
 						source:s_id
 					}
 		
 			db.insert_db(mongo_db,"user_data",ins_val)
 		
-			subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignUp",geo)
+			subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignUp",geo,referer)
 			
 			session['name']=name
 			session['username']=email
@@ -151,7 +156,8 @@ def social():
 			session['ip']=ip_addr
 			session['user_agent']=user_agent
 			session['geo']=geo
-			session['completeness']=len(ins_val.keys())*100/len(auw_schema.keys())
+			session['referer']=referer
+			session['completeness']=len(ins_val.keys())*100/len(auw_schema['user_data'].keys())
 			return "False"
 		
 		else:
@@ -164,7 +170,7 @@ def social():
 			
 				db.update_db(mongo_db,"user_data",ins_val,{'username':email})
 			
-				subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo)
+				subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo,referer)
 				
 				session['name']=name
 				session['username']=email
@@ -172,12 +178,13 @@ def social():
 				session['ip']=ip_addr
 				session['user_agent']=user_agent
 				session['geo']=geo
-				session['completeness']=len(ins_val.keys())*100/len(auw_schema.keys())
+				session['completeness']=len(user_data[0].keys())*100/len(auw_schema['user_data'].keys())
 				session['SignIn']=True
+				session['referer']=referer
 				return "True"
 			
 			else:
-				subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo)
+				subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo,referer)
 				
 				session['name']=name
 				session['username']=email
@@ -185,8 +192,9 @@ def social():
 				session['ip']=ip_addr
 				session['user_agent']=user_agent
 				session['geo']=geo
-				session['completeness']=len(ins_val.keys())*100/len(auw_schema.keys())
+				session['completeness']=len(user_data[0].keys())*100/len(auw_schema['user_data'].keys())
 				session['SignIn']=True
+				session['referer']=referer
 				return "True"
 
 
@@ -205,7 +213,7 @@ def signinApi():
 		name = request.form['name']
 		psword = request.form['psword']
 		geo = request.form['geo']
-
+		referer = request.form['referer']
 		psword = hashlib.md5(psword).hexdigest()
 
 		session_start="session_start"
@@ -220,14 +228,6 @@ def signinApi():
 				name=ud['name']
 				email=ud['email']
 				username=ud['username']
-				empty=0
-				total=0
-
-				for k in ud.keys():
-
-					if ud[k]=="":
-						empty=empty+1
-					total=total+1
 
 				break
 
@@ -237,9 +237,10 @@ def signinApi():
 			session['ip']=ip_addr
 			session['user_agent']=user_agent
 			session['geo']=geo
-			session['completeness']=empty*100/total
+			session['completeness']=len(user_data[0].keys())*100/len(auw_schema['user_data'].keys())
 			session['SignIn']=True
-			subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo)
+			session['referer']=referer
+			subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo,referer)
 			
 			return "True"
 		else:
@@ -279,10 +280,10 @@ def changePasswordAPI():
 		return "False"
 
 
-@app.route('/')
-@app.route('/login')
-def login():
-	return render_template('signin-1.html',linKey='75wicmi7s9jo0r',fbKey='1428557360782143',gKey='551417097677-2jb5r9hrf2h9lnskdaj89u29pc9daov5')
+@app.route('/<sibling>/')
+@app.route('/<sibling>/login')
+def login(sibling=None):
+	return render_template('signin-1.html',referer=sibling,linKey='75wicmi7s9jo0r',fbKey='1428557360782143',gKey='551417097677-2jb5r9hrf2h9lnskdaj89u29pc9daov5')
 
 @app.route('/change_password')
 def change_password():
@@ -291,22 +292,65 @@ def change_password():
 @app.route('/sign_out')
 def logout():
 	session_end="session_end"
-	subroutines.user_log(db,mongo_db,session_end,session['email'],session['ip'],session['user_agent'],"",session['geo'])			
+	ref=session['referer']
+	subroutines.user_log(db,mongo_db,session_end,session['email'],session['ip'],session['user_agent'],"",session['geo'],ref)			
 	session.clear()
-	return redirect('/')
+	return redirect('/'+ref+'/')
 
-@app.route('/auw_login')
-def login_auw():
-	return render_template('signin-2.html')
+@app.route('/<sibling>/auw_login')
+def login_auw(sibling=None):
+	return render_template('signin-2.html',referer=sibling)
 
 @app.route('/password_set')
 def setPassword():
-	print session
 	return render_template('password_set.html')
 
-@app.route('/signup')
-def signupPage():
-	return render_template('signup-1.html')		
+@app.route('/<sibling>/signup')
+def signupPage(sibling=None):
+	return render_template('signup-1.html',referer=sibling)		
+
+@app.route('/admin')
+def admin():
+	return render_template('admin_page.html')
+
+
+
+@app.route('/admin_login', methods = ['GET','POST'])
+def adminLogin():
+	
+	if request.method == 'GET':
+		return render_template('admin_login.html')		
+	if request.method == 'POST':
+		try:
+			name = request.form['email']
+			psword = request.form['psword']
+
+			psword = hashlib.md5(psword).hexdigest()
+
+
+			query={"email":name, "password":psword}
+			user_data=db.select_db(mongo_db,"admin_user",query)
+
+			if len(user_data)!=0:
+
+				for ud in user_data:
+
+					name=ud['name']
+					email=ud['email']
+					username=ud['email']
+					break
+
+				session['name']=name
+				session['username']=username
+				session['email']=email
+				session['SignIn']=True
+				
+				return "True"
+			else:
+				return "False"
+		except Exception,e:
+			print traceback.format_exc()
+			return "False"
 
 @app.route('/signup_proceed')
 @login_required
@@ -318,4 +362,15 @@ def signupProceedPage():
 		return render_template('signin-1.html')
 
 if __name__ == '__main__':
+	# admin user creation:
+	# psword = hashlib.md5("123456").hexdigest()
+	# ins_val={
+	# 					'name':"Utkarsh Kaushik",
+	# 					'email':"utkarsh5929@gmail.com",
+	# 					'username':"utkarsh5929@gmail.com",
+	# 					'password':psword
+	# 				}
+		
+	# db.insert_db(mongo_db,"admin_user",ins_val)
+	# exit()
 	app.run(debug = True, port=8012	, host="0.0.0.0")

@@ -24,6 +24,27 @@ auw_schema={
 							"google_id":"",
 							"timestamp":""
 			},
+			"admin_user":{
+							"id":"",
+							"name":"",
+							"username":"",
+							"password":"",
+							"email":"",
+							"phone":"",
+							"native_country":"",
+							"native_city":"",
+							"current_country":"",
+							"current_city":"",
+							"profession":"",
+							"interests":"",
+							"active_status":"",
+							"signup_type":"",
+							"fb_id":"",
+							"twt_id":"",
+							"lnkd_id":"",
+							"google_id":"",
+							"timestamp":""
+			},
 			"countries":{
 							"country_iso":"",
 							"country_name":"",
@@ -52,7 +73,8 @@ auw_schema={
 							"user_agent":"",
 							"device_type":"",
 							"os":"",
-							"browser":""
+							"browser":"",
+							"referer":""
 			},			
 			"entity_brief":{
 							"entity_id":"",

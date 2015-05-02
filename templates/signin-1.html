@@ -2,9 +2,9 @@
 <meta name="google-signin-client_id" content="{{gKey}}.apps.googleusercontent.com">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>SSO :: Sign In First Screen</title>
-<link rel="stylesheet" href="static/css/sso.css" type="text/css">
-<link rel="stylesheet" href="static/css/responsive.css" type="text/css">
-<script type="text/javascript" src="//platform.linkedin.com/in.js">
+<link rel="stylesheet" href="../static/css/sso.css" type="text/css">
+<link rel="stylesheet" href="../static/css/responsive.css" type="text/css">
+<script type="text/javascript" src="http://platform.linkedin.com/in.js">
     api_key: {{linKey}}
     authorize: true
 </script>
@@ -23,12 +23,12 @@ window.fbAsyncInit = function() {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
-    js.src = "static/scripts/sdk.js";
+    js.src = "../static/scripts/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
 </script>
-<script type="text/javascript" src="static/scripts/social.js"></script>
+<script type="text/javascript" src="../static/scripts/social.js"></script>
 <style>
 <style>
 
@@ -51,8 +51,9 @@ window.fbAsyncInit = function() {
     and connect with what your friends are sharing.</p>
     <p>Just select your favorite social network to get started.</p>
     <div class="social">
+      <input type="hidden" id="referer" value="{{referer}}"/>
     <div class="social_float">  
-      <a class="icons auIcn" title="Amar Ujala" href="/auw_login" id="tp1" onclick="show('signFrm','tp1')">Amar Ujala</a>
+      <a class="icons auIcn" title="Amar Ujala" href="/{{referer}}/auw_login" id="tp1" onclick="show('signFrm','tp1')">Amar Ujala</a>
     </div>
     <div class="social_float">
       <fb:login-button scope="public_profile,email" data-auto-logout-link="true" onlogin="checkLoginState();">
@@ -76,18 +77,5 @@ window.fbAsyncInit = function() {
 
 </div><!-- Wrapper Dv cl -->
 
-<script src="static/scripts/jquery.js" type="text/javascript"></script>
-<script type="text/javascript" src="static/scripts/jquery.popup.min.js"></script>
-<script>
-  $(function() 
-  {
-    $('a[rel*=popupModal]').popupModal({closeButton: ".close" });  /*top: 20 ,*/
-  });
-
-  $(document).ready(function()
-  {
-    $('a[rel*=popupModal]').click()
-  });
-
-</script>
-
+<script src="../static/scripts/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="../static/scripts/jquery.popup.min.js"></script>

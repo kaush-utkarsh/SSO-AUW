@@ -59,7 +59,7 @@ $('form[id="signUp"]').submit(function(event)
 {
     event.preventDefault();
     var ip_Add=myIP()
-    var payload={source:"auw",name:$('input[name="name"]').val(),city:$('input[name="city"]').val(),email:$('input[name="email"]').val(),psword:$('input[name="pwd"]').val(),ip:ip,geo:"("+lat+","+lng+")"}
+    var payload={source:"auw",name:$('input[name="name"]').val(),city:$('input[name="city"]').val(),email:$('input[name="email"]').val(),psword:$('input[name="pwd"]').val(),ip:ip,geo:"("+lat+","+lng+")",referer:$('input[id="referer"]').val()}
     signUpInAjax(payload,"/signupAPI");
 })
 
@@ -68,7 +68,7 @@ $('form[id="SignIn"]').submit(function(event)
 
     event.preventDefault();
     var ip_Add=myIP()
-    var payload={name:$('input[name="name"]').val(),psword:$('input[name="pwd"]').val(),ip:ip,geo:"("+lat+","+lng+")"}
+    var payload={name:$('input[name="name"]').val(),psword:$('input[name="pwd"]').val(),ip:ip,geo:"("+lat+","+lng+")",referer:$('input[id="referer"]').val()}
     signUpInAjax(payload,"/signinAPI");
 
 })
