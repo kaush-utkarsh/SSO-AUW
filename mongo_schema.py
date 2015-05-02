@@ -80,6 +80,9 @@ auw_schema={
 							"entity_id":"",
 							"entity_type":"",
 							"entity_name":""
+			},
+			"siblings":{
+							"sibling":""
 			},			
 			"device_log":{
 							"device":"",
