@@ -75,6 +75,128 @@ def getSiblingOverview(db,mongo_db,cdate,referer):
 
 	return return_data
 
+def getSiblingCities(db,mongo_db,cdate,referer):
+	
+	city_query = {"date":cdate, "referer":referer}
+	city_data = db.select_db(mongo_db,"city_counters",city_query)
+	
+	citD=[]
+
+	for cd in city_data:
+		cD={}
+		cD["city"]=cd["city"]
+		cD["state"]=cd["state"]
+		cD["country"]=cd["country"]
+		cD["date"]=cd["date"]
+		cD["morning"]=cd["morning"]
+		cD["office"]=cd["office"]
+		cD["evening"]=cd["evening"]
+		cD["total"]=cd["total"]
+		cD["referer"]=cd["referer"]
+		citD.append(cD)
+
+	return citD
+
+def getLastSessions(db,mongo_db,referer):
+	from pymongo import MongoClient
+
+	sess_query = {"referer":referer}
+
+	collection = mongo_db.get_collection("user_activity")
+	if collection.count()>100:
+		rows=collection.find(sess_query).skip(collection.count() - 100)
+	else:
+		rows=collection.find(sess_query)
+	data=[]
+	for row in rows:
+		datum={}
+		for r in row.keys():
+			datum[r]=row[r]
+		data.append(datum)
+
+	citD=[]
+
+	for cd in data:
+		cD={}
+		cD["ipAdd"]=cd["ipAdd"]
+		cD["session_start"]=cd["session_start"]
+		cD["country"]=cd["country"]
+		cD["city"]=cd["city"]
+		cD["state"]=cd["state"]
+		cD["device_type"]=cd["device_type"]
+		cD["os"]=cd["os"]
+		cD["browser"]=cd["browser"]
+		cD["referer"]=cd["referer"]
+		citD.append(cD)
+
+	return citD
+
+
+
+
+def getSiblingDays(db,mongo_db,referer):
+	
+	tday=( datetime.date.today () - datetime.timedelta (days=0) ).strftime('%Y-%m-%d')
+	d1 = ( datetime.date.today () - datetime.timedelta (days=1) ).strftime('%Y-%m-%d')
+	d2 = ( datetime.date.today () - datetime.timedelta (days=2) ).strftime('%Y-%m-%d')
+	d3 = ( datetime.date.today () - datetime.timedelta (days=3) ).strftime('%Y-%m-%d')
+	d4 = ( datetime.date.today () - datetime.timedelta (days=4) ).strftime('%Y-%m-%d')
+	d5 = ( datetime.date.today () - datetime.timedelta (days=5) ).strftime('%Y-%m-%d')
+	d6 = ( datetime.date.today () - datetime.timedelta (days=6) ).strftime('%Y-%m-%d')
+	d7 = ( datetime.date.today () - datetime.timedelta (days=7) ).strftime('%Y-%m-%d')
+	d8 = ( datetime.date.today () - datetime.timedelta (days=8) ).strftime('%Y-%m-%d')
+	d9 = ( datetime.date.today () - datetime.timedelta (days=9) ).strftime('%Y-%m-%d')
+	d10 = ( datetime.date.today () - datetime.timedelta (days=10) ).strftime('%Y-%m-%d')
+	d11 = ( datetime.date.today () - datetime.timedelta (days=11) ).strftime('%Y-%m-%d')
+
+	counters = 	{
+		tday:0,
+		d1:0,
+		d2:0,
+		d3:0,
+		d4:0,
+		d5:0,
+		d6:0,
+		d7:0,
+		d8:0,
+		d9:0,
+		d10:0,
+		d11:0
+	}
+
+	ctr = [str(d11),str(d10),str(d9),str(d8),str(d7),str(d6),str(d5),str(d4),str(d3),str(d2),str(d1),str(tday)]
+
+	day_query = {"referer":referer,
+				"$or":[ 
+						{"date":tday}, 
+						{"date":d1}, 
+						{"date":d2}, 
+						{"date":d3}, 
+						{"date":d4}, 
+						{"date":d5}, 
+						{"date":d6}, 
+						{"date":d7}, 
+						{"date":d8}, 
+						{"date":d9}, 
+						{"date":d10}, 
+						{"date":d11}
+					]
+	}
+
+	day_data = db.select_db(mongo_db,"date_day_split",day_query)
+	
+	citD=[]
+
+	for cd in day_data:
+		cD={}
+		counters[cd["date"]]=cd["total"]
+		
+	for key in ctr:
+		citD.append([str(key),counters[key]])	
+
+	return citD
+
+
 def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,referer):
 	try:
 		user_agent=parse(userAgent)

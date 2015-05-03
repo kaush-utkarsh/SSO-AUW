@@ -327,6 +327,56 @@ def admin():
 
 	return render_template('admin_page.html',data=json.dumps(render_data))
 
+@app.route('/admin_cities')
+def adminCity():
+
+	siblings=db.select_db(mongo_db,"siblings",{})
+
+	sib_arr=[]
+
+	for sib in siblings:
+		sib_arr.append(sib['sibling'])
+
+	cdate=str(time.strftime('%Y-%m-%d'))
+		
+	sibling_data=subroutines.getSiblingCities(db,mongo_db,cdate,sib_arr[0])
+	
+	render_data={"siblings":sib_arr,"sibling_data":sibling_data}		
+
+	return render_template('admin_city.html',data=json.dumps(render_data))
+
+@app.route('/admin_days')
+def adminDays():
+
+	siblings=db.select_db(mongo_db,"siblings",{})
+
+	sib_arr=[]
+
+	for sib in siblings:
+		sib_arr.append(sib['sibling'])
+		
+	sibling_data=subroutines.getSiblingDays(db,mongo_db,sib_arr[0])
+	
+	render_data={"siblings":sib_arr,"sibling_data":sibling_data}		
+
+	return render_template('admin_day.html',data=json.dumps(render_data))
+
+@app.route('/last_sessions')
+def lastSessions():
+
+	siblings=db.select_db(mongo_db,"siblings",{})
+
+	sib_arr=[]
+
+	for sib in siblings:
+		sib_arr.append(sib['sibling'])
+		
+	sibling_data=subroutines.getLastSessions(db,mongo_db,sib_arr[0])
+	
+	render_data={"siblings":sib_arr,"sibling_data":sibling_data}		
+
+	return render_template('last_sessions.html',data=json.dumps(render_data))
+
 
 
 @app.route('/admin_login', methods = ['GET','POST'])

@@ -1,12 +1,5 @@
 var pageData;
 
-// var d = new Date();
-
-// var currDate = d.getDate();
-// var currMonth = d.getMonth();
-// var currYear = d.getFullYear();
-
-// var dateStr = currYear + "-" + currMonth + "-" + currDate;
 $('.datepicker').datepicker({
     format: 'yyyy-mm-dd',
     todayHighlight:true,
@@ -91,15 +84,70 @@ function plotLineGraph(div,datum,labl) {
 }
 
 
-function pageLoad(data)
+function barGraph(div,data)
+{
+
+    $.plot(div, [ data ], {
+        series: {
+            bars: {
+                show: true,
+                barWidth: 0.2,
+                align: "center"
+            }
+        },
+        xaxis: {
+            mode: "categories",
+            tickLength: 0
+        }
+    });
+
+}
+
+
+function overViewPageLoad(data)
 {
     pageData=JSON.parse(data)
-    console.log(pageData)
+
     $.each(pageData.siblings,function(i,item){
         $('select[id="siblings"]').append("<option value='"+item+"'>"+item+"</option>")
     })
+
     updateOverview(pageData.sibling_data)
 }
+
+function cityPageLoad(data)
+{
+    pageData=JSON.parse(data)
+
+    $.each(pageData.siblings,function(i,item){
+        $('select[id="siblings"]').append("<option value='"+item+"'>"+item+"</option>")
+    })
+
+    updateCityPage(pageData.sibling_data)
+}
+function sessionsLoad(data)
+{
+    pageData=JSON.parse(data)
+
+    $.each(pageData.siblings,function(i,item){
+        $('select[id="siblings"]').append("<option value='"+item+"'>"+item+"</option>")
+    })
+
+    updateSessionPage(pageData.sibling_data)
+}
+
+function overDaysLoad(data)
+{
+    pageData=JSON.parse(data)
+
+    $.each(pageData.siblings,function(i,item){
+        $('select[id="siblings"]').append("<option value='"+item+"'>"+item+"</option>")
+    })
+
+    updateDaysPage(pageData.sibling_data)
+}
+
+
 
 function updateOverview(data)
 {
@@ -107,5 +155,34 @@ function updateOverview(data)
     makePieChart("#Devices",data.devices)
     makePieChart("#Cities",data.cities)
     makePieChart("#day_line",data.day_time)
+    
+}
+
+function updateDaysPage(data)
+{
+
+    console.log(data)
+    barGraph("#days_graph",data)
+    // makePieChart("#Devices",data.devices)
+    // makePieChart("#Cities",data.cities)
+    // makePieChart("#day_line",data.day_time)
+    
+}
+
+function updateCityPage(data)
+{
+
+$.each(data,function(i,item){
+    $('tbody[id="cityTable"]').append("<tr><td>"+item.city+"</td><td>"+item.state+"</td><td>"+item.country+"</td><td>"+item.morning+"</td><td>"+item.office+"</td><td>"+item.evening+"</td><td>"+item.total+"</td></tr>")
+})
+    
+}
+
+function updateSessionPage(data)
+{
+
+$.each(data,function(i,item){
+    $('tbody[id="sessionTab"]').append("<tr><td>"+item.ipAdd+"</td><td>"+item.referer+"</td><td>"+item.session_start+"</td><td>"+item.os+"</td><td>"+item.browser+"</td><td>"+item.device_type+"</td><td>"+item.city+"</td><td>"+item.state+"</td><td>"+item.country+"</td></tr>")
+})
     
 }
