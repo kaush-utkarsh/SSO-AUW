@@ -1,7 +1,7 @@
 from flask import Flask, render_template, session, redirect,url_for, flash, make_response, request, current_app
 from db_handle import dbHandler
 from functools import wraps
-import traceback, time, datetime, hashlib
+import traceback, time, datetime, hashlib, json
 import subroutines, mongo_schema
 
 app = Flask(__name__)
@@ -311,7 +311,21 @@ def signupPage(sibling=None):
 
 @app.route('/admin')
 def admin():
-	return render_template('admin_page.html')
+
+	siblings=db.select_db(mongo_db,"siblings",{})
+
+	sib_arr=[]
+
+	for sib in siblings:
+		sib_arr.append(sib['sibling'])
+
+	cdate=str(time.strftime('%Y-%m-%d'))
+		
+	sibling_data=subroutines.getSiblingOverview(db,mongo_db,cdate,sib_arr[0])
+	
+	render_data={"siblings":sib_arr,"sibling_data":sibling_data}		
+
+	return render_template('admin_page.html',data=json.dumps(render_data))
 
 
 

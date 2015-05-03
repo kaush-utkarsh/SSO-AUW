@@ -7,6 +7,74 @@ def getCurrentTime():
 	currTime=str(currTime)
 	return currTime
 
+def getSiblingOverview(db,mongo_db,cdate,referer):
+	
+	device_query = {"date":cdate, "referer":referer}
+	device_data = db.select_db(mongo_db,"device_log",device_query)
+	
+	device_count=[]
+	
+	if len(device_data)==0:
+		device_count.append({"label":"No Devices","data":1})
+	else:
+		for device in device_data:
+			device_count.append({"label":device["device"],"data":device["count"]})
+
+	city_query = {"date":cdate, "referer":referer}
+	city_data = db.select_db(mongo_db,"city_counters",city_query)
+	
+	city_count=[]
+	
+	if len(city_data)==0:
+		city_count.append({"label":"No City","data":1})
+	else:
+		for city in city_data:
+			city_count.append({"label":city["city"],"data":city["total"]})
+
+	day_query = {"date":cdate, "referer":referer}
+	day_data = db.select_db(mongo_db,"date_day_split",day_query)
+	
+	day_count=[]
+	
+	if len(day_data)==0:
+		day_count.append({"data" : 0, "label" : "00:00 - 02:00"})
+		day_count.append({"data" : 0, "label" : "02:00 - 04:00"})
+		day_count.append({"data" : 0, "label" : "04:00 - 06:00"})
+		day_count.append({"data" : 0, "label" : "06:00 - 08:00"})
+		day_count.append({"data" : 0, "label" : "08:00 - 10:00"})
+		day_count.append({"data" : 0, "label" : "10:00 - 12:00"})
+		day_count.append({"data" : 0, "label" : "12:00 - 14:00"})
+		day_count.append({"data" : 0, "label" : "14:00 - 16:00"})
+		day_count.append({"data" : 0, "label" : "16:00 - 18:00"})
+		day_count.append({"data" : 0, "label" : "18:00 - 20:00"})
+		day_count.append({"data" : 0, "label" : "20:00 - 22:00"})
+		day_count.append({"data" : 0, "label" : "22:00 - 24:00"})
+		
+	else:
+		for day in day_data:
+			day_count.append({"data" : day["02AM"], "label" : "00:00 - 02:00"})
+			day_count.append({"data" : day["04AM"], "label" : "02:00 - 04:00"})
+			day_count.append({"data" : day["06AM"], "label" : "04:00 - 06:00"})
+			day_count.append({"data" : day["08AM"], "label" : "06:00 - 08:00"})
+			day_count.append({"data" : day["10AM"], "label" : "08:00 - 10:00"})
+			day_count.append({"data" : day["12AM"], "label" : "10:00 - 12:00"})
+			day_count.append({"data" : day["14AM"], "label" : "12:00 - 14:00"})
+			day_count.append({"data" : day["16AM"], "label" : "14:00 - 16:00"})
+			day_count.append({"data" : day["18AM"], "label" : "16:00 - 18:00"})
+			day_count.append({"data" : day["20AM"], "label" : "18:00 - 20:00"})
+			day_count.append({"data" : day["22AM"], "label" : "20:00 - 22:00"})
+			day_count.append({"data" : day["24AM"], "label" : "22:00 - 24:00"})
+			break;
+
+	return_data={
+					"devices":device_count,
+					"cities":city_count,
+					"day_time":day_count
+
+				}
+
+	return return_data
+
 def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,referer):
 	try:
 		user_agent=parse(userAgent)
@@ -65,7 +133,7 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,re
 		
 
 
-		device_query = {"date":cdate, "device":device}
+		device_query = {"date":cdate, "device":device, "referer":referer}
 		device_data = db.select_db(mongo_db,"device_log",device_query)
 		
 		if len(device_data)==0:
@@ -73,10 +141,11 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,re
 			ins_val={
 						'date':cdate,
 						'device':device,
-						'count':1
+						'count':1,
+						"referer":referer
 					}
 		
-			db.insert_db(mongo_db,"device_data",ins_val)
+			db.insert_db(mongo_db,"device_log",ins_val)
 		
 		else:
 
@@ -102,7 +171,7 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,re
 			timeQn1="office"
 			timeQn2="morning"
 
-		city_query = {"date":cdate, "city":city, "state":state, "country":country}
+		city_query = {"date":cdate, "city":city, "state":state, "country":country, "referer":referer}
 		city_data = db.select_db(mongo_db,"city_counters",city_query)
 		
 		if len(city_data)==0:
@@ -115,7 +184,8 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,re
 					timeQ:1,	# 00:00-10:00
 					timeQn1:0,	# 10:00-19:00
 					timeQn2:0,	# 19:00-23:59
-					"total":1					
+					"total":1,
+					"referer":referer					
 			}
 		
 			db.insert_db(mongo_db,"city_counters",ins_val)
@@ -128,7 +198,7 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,re
 					}
 			db.update_db(mongo_db,"city_counters",ins_val,city_query)
 
-		day_query = {"date":cdate}
+		day_query = {"date":cdate, "referer":referer}
 		day_data = db.select_db(mongo_db,"date_day_split",day_query)
 
 		if(cTimeObj<time.strptime('02:00:00','%H:%M:%S')):
@@ -314,7 +384,8 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,re
 					timeQn9:0,	# 18:00 - 20:00
 					timeQn10:0,	# 20:00 - 22:00
 					timeQn11:0,	# 22:00 - 24:00
-					"total":1
+					"total":1,
+					"referer":referer
 				}
 
 			db.insert_db(mongo_db,"date_day_split",ins_val)

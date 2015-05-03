@@ -87,7 +87,8 @@ auw_schema={
 			"device_log":{
 							"device":"",
 							"date":"",
-							"count":""
+							"count":"",
+							"referer":""
 			},			
 			"city_counters":{
 							"city":"",
@@ -97,7 +98,8 @@ auw_schema={
 							"morning":"",	# 00:00-10:00
 							"office":"",	# 10:00-19:00
 							"evening":"",	# 19:00-23:59
-							"total":""					
+							"total":"",
+							"referer":""					
 			},			
 			"date_day_split":{
 							"date":"",
@@ -113,6 +115,7 @@ auw_schema={
 							"20AM":"",	# 18:00 - 20:00
 							"22AM":"",	# 20:00 - 22:00
 							"24AM":"",	# 22:00 - 24:00
-							"total":""
+							"total":"",
+							"referer":""
 			}
 }
