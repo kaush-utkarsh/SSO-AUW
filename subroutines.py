@@ -186,15 +186,19 @@ def getSiblingDays(db,mongo_db,referer):
 	day_data = db.select_db(mongo_db,"date_day_split",day_query)
 	
 	citD=[]
+	temp=[]
 
 	for cd in day_data:
 		cD={}
+		tmp={}
 		counters[cd["date"]]=cd["total"]
-		
+		tmp['label']=cd["date"]
+		tmp['data']=cd["total"]
+		temp.append(tmp)
 	for key in ctr:
 		citD.append([str(key),counters[key]])	
 
-	return citD
+	return temp
 
 
 def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,referer):

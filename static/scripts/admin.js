@@ -8,6 +8,8 @@ $('.datepicker').datepicker({
     todayBtn:true
 })
 
+
+
 $('form[id="admin_signin_form"]').submit(function(event)
 {
 
@@ -152,6 +154,11 @@ function overDaysLoad(data)
 function updateOverview(data)
 {
 
+    $('#Devices').empty()
+    $('#Cities').empty()
+    $('#day_line').empty()
+
+
     makePieChart("#Devices",data.devices)
     makePieChart("#Cities",data.cities)
     makePieChart("#day_line",data.day_time)
@@ -161,17 +168,16 @@ function updateOverview(data)
 function updateDaysPage(data)
 {
 
-    console.log(data)
-    barGraph("#days_graph",data)
-    // makePieChart("#Devices",data.devices)
-    // makePieChart("#Cities",data.cities)
-    // makePieChart("#day_line",data.day_time)
+    // console.log(data)
+    // barGraph("#days_graph",data)
+    $('#days_graph').empty()
+    makePieChart("#days_graph",data)
     
 }
 
 function updateCityPage(data)
 {
-
+$('tbody[id="cityTable"]').empty()
 $.each(data,function(i,item){
     $('tbody[id="cityTable"]').append("<tr><td>"+item.city+"</td><td>"+item.state+"</td><td>"+item.country+"</td><td>"+item.morning+"</td><td>"+item.office+"</td><td>"+item.evening+"</td><td>"+item.total+"</td></tr>")
 })
@@ -180,9 +186,44 @@ $.each(data,function(i,item){
 
 function updateSessionPage(data)
 {
-
+$('tbody[id="sessionTab"]').empty()
 $.each(data,function(i,item){
     $('tbody[id="sessionTab"]').append("<tr><td>"+item.ipAdd+"</td><td>"+item.referer+"</td><td>"+item.session_start+"</td><td>"+item.os+"</td><td>"+item.browser+"</td><td>"+item.device_type+"</td><td>"+item.city+"</td><td>"+item.state+"</td><td>"+item.country+"</td></tr>")
 })
     
 }
+
+function pageUpdate()
+{
+    var dt=$('#datepicker').val()
+    var sibl=$('#siblings').val()    
+    var headr= $('#siblings').parents('.container-fluid').find('h1:eq(0)').html()
+    var payload={date:dt,referer:sibl,page:headr}
+    $.ajax(
+        {
+            url: '/admin_page_fetch',
+            type: "POST",
+            crossDomain: true,
+            data: payload,
+            datatype:'html',
+            success: function (data) {
+                var jsonD = JSON.parse(data)
+                if(headr=="Last 100 sessions")
+                    updateSessionPage(jsonD.sibling_data)
+                if(headr=="Hits per Days")
+                    updateCityPage(jsonD.sibling_data)
+                if(headr=="Hits per City")
+                    updateCityPage(jsonD.sibling_data)
+                if(headr=="Overview")
+                    updateOverview(jsonD.sibling_data)
+            }
+    });
+
+}
+
+$('#datepicker').change(function(event){
+    pageUpdate();
+});
+$('#siblings').change(function(event){
+   pageUpdate(); 
+});

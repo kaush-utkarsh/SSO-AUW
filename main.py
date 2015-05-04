@@ -416,6 +416,42 @@ def adminLogin():
 			print traceback.format_exc()
 			return "False"
 
+@app.route('/admin_page_fetch', methods = ['POST'])
+def adminPages():
+	
+	if request.method == 'POST':
+		try:
+			dt = request.form['date']
+			referer = request.form['referer']
+			page = request.form['page']
+
+			if page == "Last 100 sessions":
+				sibling_data=subroutines.getLastSessions(db,mongo_db,referer)
+		
+				render_data={"sibling_data":sibling_data}
+
+			if page == "Hits per Days":
+				sibling_data=subroutines.getSiblingDays(db,mongo_db,referer)
+		
+				render_data={"sibling_data":sibling_data}
+
+			if page == "Hits per City":
+				sibling_data=subroutines.getSiblingCities(db,mongo_db,dt,referer)
+		
+				render_data={"sibling_data":sibling_data}
+
+			if page == "Overview":
+				sibling_data=subroutines.getSiblingOverview(db,mongo_db,dt,referer)
+		
+				render_data={"sibling_data":sibling_data}
+
+			return json.dumps(render_data)
+		except Exception,e:
+			print traceback.format_exc()
+			return "False"
+
+
+
 @app.route('/signup_proceed')
 @login_required
 def signupProceedPage():
