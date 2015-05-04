@@ -222,13 +222,16 @@ def signinApi():
 		user_data=db.select_db(mongo_db,"user_data",query)
 
 		if len(user_data)!=0:
-
+			empty=0
 			for ud in user_data:
 
 				name=ud['name']
 				email=ud['email']
 				username=ud['username']
 
+				for k in ud.keys():
+					if ud[k]!="":
+						empty=empty+1
 				break
 
 			session['name']=name
@@ -237,7 +240,7 @@ def signinApi():
 			session['ip']=ip_addr
 			session['user_agent']=user_agent
 			session['geo']=geo
-			session['completeness']=len(user_data[0].keys())*100/len(auw_schema['user_data'].keys())
+			session['completeness']=empty*100/len(auw_schema['user_data'].keys())
 			session['SignIn']=True
 			session['referer']=referer
 			subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo,referer)

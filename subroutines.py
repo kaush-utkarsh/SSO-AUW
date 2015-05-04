@@ -218,13 +218,18 @@ def user_log(db,mongo_db,session_st_end,username,ip,userAgent,sessionType,geo,re
 		resp = requests.get(gps_url)
 		response = str(resp.text).replace('\n','')
 		resTxt=json.loads(response)
-		addr=str(resTxt['results'][0]['formatted_address'])
-		addrList=addr.split(',')
-		country=(addrList[len(addrList)-1]).strip()
-		city= (addrList[len(addrList)-3]).strip()
-		state= (addrList[len(addrList)-2]).strip()
-		pin=re.findall('\d+', state)
-		state=state[:state.find(pin[0])].strip()
+		try:
+			addr=str(resTxt['results'][0]['formatted_address'])
+			addrList=addr.split(',')
+			country=(addrList[len(addrList)-1]).strip()
+			city= (addrList[len(addrList)-3]).strip()
+			state= (addrList[len(addrList)-2]).strip()
+			pin=re.findall('\d+', state)
+			state=state[:state.find(pin[0])].strip()
+		except Exception,exx:
+			country="India"
+			state="N/A"
+			city="N/A"
 		cdate=str(time.strftime('%Y-%m-%d'))
 		ctime=str(time.strftime('%H:%M:%S'))
 		ins_val={

@@ -31,10 +31,12 @@ window.fbAsyncInit = function() {
 <script type="text/javascript" src="../static/scripts/social.js"></script>
 <style>
 <style>
-
-  .social_float {width:80px; float:left !important;}
+.social ul{width:372px;}
+.social ul li{width:80px;}
+  .social ul li{ float:left !important;}
+  .social_float {width:80px; float:left !important;list-style: none !important; margin:0 5px;}
   .social_float:nth-child(1){width:40px;}
-  .g-signin2 {width:120px !important;}
+  .g-signin2 {width:120px !important; float:left !important;}
 
 </style>
 </style>
@@ -50,23 +52,23 @@ window.fbAsyncInit = function() {
     <p>Build your own personal story stream, participate in discussions, easily share your favorite stories,
     and connect with what your friends are sharing.</p>
     <p>Just select your favorite social network to get started.</p>
-    <div class="social">
       <input type="hidden" id="referer" value="{{referer}}"/>
-    <div class="social_float">  
+    <ul class="social">
+    <li class="social_float">  
       <a class="icons auIcn" title="Amar Ujala" href="/{{referer}}/auw_login" id="tp1" onclick="show('signFrm','tp1')">Amar Ujala</a>
-    </div>
-    <div class="social_float">
+    </li>
+    <li class="social_float">
       <fb:login-button scope="public_profile,email" data-auto-logout-link="true" onlogin="checkLoginState();">
       </fb:login-button>
-    </div>
+    </li>
     <!-- <a class="icons fbIcn" title="Facebook" href="#">Facebook</a> -->
     <!-- <a class="icons twIcn" title="Twitter" href="#">Twitter</a> -->
-    <div class="social_float g-signin2" data-onsuccess="onGSignIn" title="Google Plus"></div>
-    <div class="social_float">
+    <li class="social_float g-signin2" data-onsuccess="onGSignIn" title="Google Plus"></li>
+    <li class="social_float">
       <a class="icons linkndIcn" title="Linked In" onclick="liAuth()">LinkedIn</a>
-    </div>
+    </li>
     <div class="clr"></div>
-    </div>
+    </ul>
   </div>
   <!-- Sign In - Ist Screen Dv -->               
 </div>                                                 
