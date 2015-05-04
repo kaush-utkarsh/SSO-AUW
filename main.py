@@ -77,6 +77,8 @@ def index():
 		
 			subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignUp",geo,referer)
 			
+			session['source']=source
+			
 			session['name']=name
 			session['username']=email
 			session['email']=email
@@ -126,12 +128,15 @@ def social():
 		source = request.form['source']
 		s_id = request.form['id']
 		referer = request.form['referer']
-
+		location = request.form['location']
+		pic = request.form['picture']
 		session_start="session_start"
 		
 		query = {"email":email}
 		user_data = db.select_db(mongo_db,"user_data",query)
 		
+		pic_source=source[:-2]+"pic"
+
 		if len(user_data)==0:
 		
 			currTime=subroutines.getCurrentTime()
@@ -143,6 +148,8 @@ def social():
 						'signup_type':source,
 						'timestamp':currTime,
 						'referer':referer,
+						'location':location,
+						pic_source:pic,
 						source:s_id
 					}
 		
@@ -156,21 +163,35 @@ def social():
 			session['ip']=ip_addr
 			session['user_agent']=user_agent
 			session['geo']=geo
+			session['source']=source
 			session['referer']=referer
 			session['completeness']=len(ins_val.keys())*100/len(auw_schema['user_data'].keys())
 			return "False"
 		
 		else:
 
+			empty=0
+			for ud in user_data:
+
+				for k in ud.keys():
+					if ud[k]!="":
+						empty=empty+1
+				break
+
+
 			if user_data[0][source]!=s_id:
 		
 				ins_val={
-							source:s_id
+						'location':location,
+						pic_source:pic,
+						source:s_id
 						}
 			
 				db.update_db(mongo_db,"user_data",ins_val,{'username':email})
 			
 				subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo,referer)
+	
+				session['source']=source
 				
 				session['name']=name
 				session['username']=email
@@ -178,21 +199,23 @@ def social():
 				session['ip']=ip_addr
 				session['user_agent']=user_agent
 				session['geo']=geo
-				session['completeness']=len(user_data[0].keys())*100/len(auw_schema['user_data'].keys())
+				session['completeness']=empty*100/len(auw_schema['user_data'].keys())
 				session['SignIn']=True
 				session['referer']=referer
 				return "True"
 			
 			else:
 				subroutines.user_log(db,mongo_db,session_start,email,ip_addr,user_agent,"SignIn",geo,referer)
-				
+
+				session['source']=source
+			
 				session['name']=name
 				session['username']=email
 				session['email']=email
 				session['ip']=ip_addr
 				session['user_agent']=user_agent
 				session['geo']=geo
-				session['completeness']=len(user_data[0].keys())*100/len(auw_schema['user_data'].keys())
+				session['completeness']=empty*100/len(auw_schema['user_data'].keys())
 				session['SignIn']=True
 				session['referer']=referer
 				return "True"
@@ -234,6 +257,7 @@ def signinApi():
 						empty=empty+1
 				break
 
+			session['source']="auw"
 			session['name']=name
 			session['username']=username
 			session['email']=email
@@ -459,7 +483,17 @@ def adminPages():
 @login_required
 def signupProceedPage():
 	try:
-		return render_template('signup-2.html',userName=session['name'],profile_Complete=session['completeness'])		
+		userData=db.select_db(mongo_db,"user_data",{"email":session['email']})
+		pic=""
+
+		if session["source"] != "auw":
+			for uD in userData:
+				print uD
+				if uD[session["source"][:-2]+"pic"]!="":
+					pic=uD[session["source"][:-2]+"pic"]
+		print pic
+		
+		return render_template('signup-2.html',userName=session['name'],proPic=pic,profile_Complete=session['completeness'])		
 	except Exception,e:
 		print traceback.format_exc()
 		return render_template('signin-1.html')

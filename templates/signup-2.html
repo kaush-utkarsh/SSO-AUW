@@ -17,7 +17,11 @@
                   <h3><span>Welcome</span> {{userName}}
                   </h3>
                   <div class="prflDv">
+                    {% if proPic == "" %}
                      <div class="mrgB15"><img src="../static/images/prfl-pic.png" alt="" class="pimg"></div>
+                     {% else %}
+                     <div class="mrgB15"><img src="{{proPic}}" alt="" class="pimg"></div>
+                     {% endif %}
                      <h4>Profile Completion {{profile_Complete}}%</h4>
                      <div class="barDv"><span style="width:{{profile_Complete}}%;"></span></div>
                      

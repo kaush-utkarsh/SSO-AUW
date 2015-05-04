@@ -10,6 +10,7 @@ auw_schema={
 							"password":"",
 							"email":"",
 							"phone":"",
+							"location":"",
 							"native_country":"",
 							"native_city":"",
 							"current_country":"",
@@ -19,9 +20,13 @@ auw_schema={
 							"active_status":"",
 							"signup_type":"",
 							"fb_id":"",
+							"fb_pic":"",
 							"twt_id":"",
+							"twt_pic":"",
 							"lnkd_id":"",
+							"lnkd_pic":"",
 							"google_id":"",
+							"google_pic":"",
 							"timestamp":""
 			},
 			"admin_user":{
