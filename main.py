@@ -324,6 +324,27 @@ def adminPro():
 		return "False"
 
 
+@app.route('/add_admin', methods = ['GET','POST'])
+def addAdmin():
+	try:
+		if request.method == 'GET':
+			return render_template('add_admin.html')
+		if request.method == 'POST':
+			name = request.form['name']
+			psword = request.form['password']
+			email = request.form['email']
+			psword = hashlib.md5(psword).hexdigest()
+			ins_val={
+					'name':name,
+					'email':email,
+					'username':email,
+					'password':psword
+					}
+				
+			db.insert_db(mongo_db,"admin_user",ins_val)
+			return "True"
+	except Exception,e:
+		return "False"
 
 @app.route('/signinAPI', methods = ['POST'])
 def signinApi():

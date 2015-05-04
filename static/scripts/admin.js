@@ -62,6 +62,13 @@ var payload = {name:$(parent).find('#fName').val(),email:$(parent).find('#email'
 signUpInAjax(payload,"/updateAdminProfile");
 }
 
+function addAdmin(item)
+{
+var parent = $(item).parents('.container-fluid')
+var payload = {name:$(parent).find('#fName').val(),email:$(parent).find('#email').val(),password:$(parent).find('#password').val()}
+signUpInAjax(payload,"/add_admin");
+}
+
 
 function makePieChart(div,data)
 {
