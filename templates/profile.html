@@ -1,0 +1,120 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>SSO :: Profile Complete</title>
+
+<link rel="stylesheet" href="../static/css/sso.css" type="text/css">
+<link rel="stylesheet" href="../static/css/responsive.css" type="text/css">
+<link href="static/css/bootstrap.min.css" rel="stylesheet">
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Complete Your Profile</h2>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-2">
+                <label>Full Name</label>
+            </div>
+            <div class="col-lg-10">
+                <input id="fName" class="form-control" value="{{userD.name}}" placeholder="Full Name">
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-2">
+                <label>E Mail</label>
+            </div>
+            <div class="col-lg-10">
+                <input id="email" disabled class="form-control" value="{{userD.email}}" placeholder="smith@yourmail.com">
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-2">
+                <label>Phone</label>
+            </div>
+            <div class="col-lg-10">
+                <input id="phone" class="form-control" value="{{userD.phone}}" placeholder="0987654321">
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-2">
+                <label>Location</label>
+            </div>
+            <div class="col-lg-10">
+                <input id="location" class="form-control" value="{{userD.location}}" placeholder="Your Location">
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-2">
+                <label>Native City</label>
+            </div>
+            <div class="col-lg-10">
+                <input id="native_city" class="form-control" value="{{userD.native_city}}" placeholder="Native City">
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-2">
+                <label>Native Country</label>
+            </div>
+            <div class="col-lg-10">
+                <input id="native_country" class="form-control" value="{{userD.native_country}}" placeholder="Native Country">
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-2">
+                <label>Current City</label>
+            </div>
+            <div class="col-lg-10">
+                <input id="current_city" class="form-control" value="{{userD.current_city}}" placeholder="Current City">
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-2">
+                <label>Current Country</label>
+            </div>
+            <div class="col-lg-10">
+                <input id="current_country" class="form-control" value="{{userD.current_country}}" placeholder="Current Country">
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-2">
+                <label>Profession</label>
+            </div>
+            <div class="col-lg-10">
+                <input id="profession" class="form-control" value="{{userD.profession}}" placeholder="Profession">
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-2">
+                <label>Interests</label>
+            </div>
+            <div class="col-lg-10">
+                <input id="interests" class="form-control" value="{{userD.interests}}" placeholder="Your Interests">
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row form-group">
+            <div class="col-lg-12">
+                <button class="btn btn-primary btn-block" onClick="saveThis(this)">Update and Save</button>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        
+        <!-- /.row -->
+    </div>
+            <!-- /.container-fluid -->
+</div>
+        
+<script src="../static/scripts/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="../static/scripts/jquery.popup.min.js"></script>
+<script type="text/javascript" src="../static/scripts/sso.js"></script>

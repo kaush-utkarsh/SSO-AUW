@@ -73,6 +73,14 @@ $('form[id="SignIn"]').submit(function(event)
 
 })
 
+function saveThis(item)
+{
+var parent = $(item).parents('.container-fluid')
+var payload = {name:$(parent).find('#fName').val(),email:$(parent).find('#email').val(),phone:$(parent).find('#phone').val(),location:$(parent).find('#location').val(),native_city:$(parent).find('#native_city').val(),native_country:$(parent).find('#native_country').val(),current_city:$(parent).find('#current_city').val(),current_country:$(parent).find('#current_country').val(),profession:$(parent).find('#profession').val(),interests:$(parent).find('#interests').val()}
+signUpInAjax(payload,"/updateUserProfile");
+}
+
+
 
 $('form[id="setPwd"]').submit(function(event)
 {

@@ -226,6 +226,54 @@ def social():
 		return "False"
 
 
+@app.route('/updateUserProfile', methods = ['POST'])
+def userPro():
+	try:
+		name = request.form['name']
+		email = request.form['email']
+		phone = request.form['phone']
+		native_city = request.form['native_city']
+		native_country = request.form['native_country']
+		location = request.form['location']
+		current_city = request.form['current_city']
+		current_country = request.form['current_country']
+		profession = request.form['profession']
+		interests = request.form['interests']
+		
+		ins_val={
+				"name" : name,
+				"phone" : phone,
+				"native_city" : native_city,
+				"native_country" : native_country,
+				"location" : location,
+				"current_city" : current_city,
+				"current_country" : current_country,
+				"profession" : profession,
+				"interests" : interests
+				}
+	
+		db.update_db(mongo_db,"user_data",ins_val,{'username':email})
+
+		user_data=db.select_db(mongo_db,"user_data",{'username':email})
+
+		empty = 0
+
+		for ud in user_data:
+
+			for k in ud.keys():
+				if ud[k]!="":
+					empty=empty+1
+			break
+
+		session['completeness']=empty*100/len(auw_schema['user_data'].keys())
+			
+		return "True"
+
+
+	except Exception,e:
+		print traceback.format_exc()
+		return "False"
+
 
 
 @app.route('/signinAPI', methods = ['POST'])
@@ -494,6 +542,18 @@ def signupProceedPage():
 		print pic
 		
 		return render_template('signup-2.html',userName=session['name'],proPic=pic,profile_Complete=session['completeness'])		
+	except Exception,e:
+		print traceback.format_exc()
+		return render_template('signin-1.html')
+
+
+@app.route('/profile_complete')
+@login_required
+def profilePage():
+	try:
+		userData=db.select_db(mongo_db,"user_data",{"email":session['email']})
+		
+		return render_template('profile.html',userD=userData[0],userName=session['name'],profile_Complete=session['completeness'])		
 	except Exception,e:
 		print traceback.format_exc()
 		return render_template('signin-1.html')
