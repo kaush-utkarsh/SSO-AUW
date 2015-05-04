@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>AUW SSO | Admin Panel | Hits per City</title>
+    <title>AUW SSO | Admin Panel | Overview</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
@@ -90,67 +90,117 @@
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-
         <!-- Page Content -->
         <div id="page-wrapper">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Hits per City</h1>
+                        <h2 class="page-header">Complete Your Profile</h2>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <input id="datepicker" class="form-control datepicker">
-                        </div>
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label>Full Name</label>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <select id="siblings" class="form-control"></select>
-                        </div>
+                    <div class="col-lg-10">
+                        <input id="fName" class="form-control" value="{{userD.name}}" placeholder="Full Name">
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
-                <div class="row">
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label>E Mail</label>
+                    </div>
+                    <div class="col-lg-10">
+                        <input id="email" disabled class="form-control" value="{{userD.email}}" placeholder="smith@yourmail.com">
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label>Phone</label>
+                    </div>
+                    <div class="col-lg-10">
+                        <input id="phone" class="form-control" value="{{userD.phone}}" placeholder="0987654321">
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label>Location</label>
+                    </div>
+                    <div class="col-lg-10">
+                        <input id="location" class="form-control" value="{{userD.location}}" placeholder="Your Location">
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label>Native City</label>
+                    </div>
+                    <div class="col-lg-10">
+                        <input id="native_city" class="form-control" value="{{userD.native_city}}" placeholder="Native City">
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label>Native Country</label>
+                    </div>
+                    <div class="col-lg-10">
+                        <input id="native_country" class="form-control" value="{{userD.native_country}}" placeholder="Native Country">
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label>Current City</label>
+                    </div>
+                    <div class="col-lg-10">
+                        <input id="current_city" class="form-control" value="{{userD.current_city}}" placeholder="Current City">
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label>Current Country</label>
+                    </div>
+                    <div class="col-lg-10">
+                        <input id="current_country" class="form-control" value="{{userD.current_country}}" placeholder="Current Country">
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label>Profession</label>
+                    </div>
+                    <div class="col-lg-10">
+                        <input id="profession" class="form-control" value="{{userD.profession}}" placeholder="Profession">
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-2">
+                        <label>Interests</label>
+                    </div>
+                    <div class="col-lg-10">
+                        <input id="interests" class="form-control" value="{{userD.interests}}" placeholder="Your Interests">
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <div class="row form-group">
                     <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Hits Per City
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>City</th>
-                                                <th>State</th>
-                                                <th>Country</th>
-                                                <th>Pre-Office Hours</th>
-                                                <th>Office Hours</th>
-                                                <th>Post-Office Hours</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="cityTable">
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.table-responsive -->
-                            </div>
-                            <!-- /.panel-body -->
-                        </div>
-                        <!-- /.panel -->
+                        <button class="btn btn-primary btn-block" onClick="saveThis(this)">Update and Save</button>
                     </div>
-                
+                    <!-- /.col-lg-12 -->
                 </div>
-
+                
                 <!-- /.row -->
             </div>
-            <!-- /.container-fluid -->
+                    <!-- /.container-fluid -->
         </div>
+
         <!-- /#page-wrapper -->
 
     </div>
@@ -168,20 +218,11 @@
     <!-- Custom Theme JavaScript -->
     <script src="static/scripts/sb-admin-2.js"></script>
 
-    <!-- Flot Charts JavaScript -->
-    <script src="static/scripts/excanvas.min.js"></script>
-    <script src="static/scripts/jquery.flot.js"></script>
-    <script src="static/scripts/jquery.flot.pie.js"></script>
-    <script src="static/scripts/jquery.flot.resize.js"></script>
-    <script src="static/scripts/jquery.flot.time.js"></script>
-    <script src="static/scripts/jquery.flot.tooltip.min.js"></script>
-    <script src="static/scripts/bootstrap-datepicker.min.js"></script>
-
     <!-- Common JavaScript Functions -->
     <script src="static/scripts/admin.js"></script>
 
     <script>
-    cityPageLoad('{{data | safe}}');
+    overViewPageLoad('{{data | safe}}');
     </script>
 
 </body>

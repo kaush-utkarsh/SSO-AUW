@@ -1,5 +1,6 @@
 var pageData;
-
+try
+{
 $('.datepicker').datepicker({
     format: 'yyyy-mm-dd',
     todayHighlight:true,
@@ -7,7 +8,10 @@ $('.datepicker').datepicker({
     endDate: new Date(),
     todayBtn:true
 })
-
+}
+catch(err)
+{
+}
 
 
 $('form[id="admin_signin_form"]').submit(function(event)
@@ -31,6 +35,33 @@ $('form[id="admin_signin_form"]').submit(function(event)
             }
     });
 })
+
+
+function signUpInAjax(payload,url)
+{
+    $.ajax(
+        {
+            url: url,
+            type: "POST",
+            crossDomain: true,
+            data: payload,
+            datatype:'html',
+            success: function (data) {
+                if(data=="True")
+                    window.location.assign('/admin')
+                else
+                    console.log(data)
+            }
+    });
+}
+
+function saveThis(item)
+{
+var parent = $(item).parents('.container-fluid')
+var payload = {name:$(parent).find('#fName').val(),email:$(parent).find('#email').val(),phone:$(parent).find('#phone').val(),location:$(parent).find('#location').val(),native_city:$(parent).find('#native_city').val(),native_country:$(parent).find('#native_country').val(),current_city:$(parent).find('#current_city').val(),current_country:$(parent).find('#current_country').val(),profession:$(parent).find('#profession').val(),interests:$(parent).find('#interests').val()}
+signUpInAjax(payload,"/updateAdminProfile");
+}
+
 
 function makePieChart(div,data)
 {

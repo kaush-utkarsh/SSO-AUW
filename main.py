@@ -275,6 +275,55 @@ def userPro():
 		return "False"
 
 
+@app.route('/updateAdminProfile', methods = ['POST'])
+def adminPro():
+	try:
+		name = request.form['name']
+		email = request.form['email']
+		phone = request.form['phone']
+		native_city = request.form['native_city']
+		native_country = request.form['native_country']
+		location = request.form['location']
+		current_city = request.form['current_city']
+		current_country = request.form['current_country']
+		profession = request.form['profession']
+		interests = request.form['interests']
+		
+		ins_val={
+				"name" : name,
+				"phone" : phone,
+				"native_city" : native_city,
+				"native_country" : native_country,
+				"location" : location,
+				"current_city" : current_city,
+				"current_country" : current_country,
+				"profession" : profession,
+				"interests" : interests
+				}
+	
+		db.update_db(mongo_db,"admin_user",ins_val,{'username':email})
+
+		user_data=db.select_db(mongo_db,"admin_user",{'username':email})
+
+		empty = 0
+
+		for ud in user_data:
+
+			for k in ud.keys():
+				if ud[k]!="":
+					empty=empty+1
+			break
+
+		session['completeness']=empty*100/len(auw_schema['user_data'].keys())
+			
+		return "True"
+
+
+	except Exception,e:
+		print traceback.format_exc()
+		return "False"
+
+
 
 @app.route('/signinAPI', methods = ['POST'])
 def signinApi():
@@ -419,6 +468,15 @@ def adminCity():
 	render_data={"siblings":sib_arr,"sibling_data":sibling_data}		
 
 	return render_template('admin_city.html',data=json.dumps(render_data))
+
+@app.route('/admin_profile')
+def adminProfile():
+
+	userData=db.select_db(mongo_db,"admin_user",{"email":session['email']})
+	
+	return render_template('admin_profile.html',userD=userData[0])
+
+
 
 @app.route('/admin_days')
 def adminDays():
